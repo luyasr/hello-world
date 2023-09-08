@@ -3,7 +3,6 @@ package impl
 import (
 	"context"
 	"github.com/luyasr/hello-world/apps/user"
-	"log"
 )
 
 var (
@@ -18,7 +17,6 @@ func NewImpl() *Impl {
 }
 
 func (i *Impl) CreateUser(ctx context.Context, req *user.CreateUserRequest) (*user.User, error) {
-	log.Println("2", req)
 	return &user.User{Id: 1,
 		CreateUserRequest: req,
 	}, nil
