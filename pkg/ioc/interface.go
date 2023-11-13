@@ -14,6 +14,6 @@ type GinApiHandler interface {
 	Registry(r gin.IRouter)
 }
 
-type GrpcServiceHandler interface {
+type GrpcServerHandler interface {
 	Registry(g *grpc.Server)
 }

@@ -1,2 +1,4 @@
-server:
+httpServer:
   port: 8080
+grpcServer:
+  port: 50051

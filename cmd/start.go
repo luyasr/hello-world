@@ -30,6 +30,7 @@ var startCmd = &cobra.Command{
 
 type server struct {
 	http *protocol.HttpServer
+	grpc *protocol.GrpcServer
 	ch   chan os.Signal
 }
 
@@ -39,6 +40,7 @@ func newServer() *server {
 
 	return &server{
 		http: protocol.NewHttpServer(),
+		grpc: protocol.NewGrpcServer(),
 		ch:   sigs,
 	}
 }
@@ -47,7 +49,13 @@ func (s *server) start() {
 	go func() {
 		err := s.http.Run()
 		if err != nil && !errors.Is(err, http.ErrServerClosed) {
-			panic(err)
+			log.Fatal(err)
+		}
+	}()
+	go func() {
+		err := s.grpc.Run()
+		if err != nil {
+			log.Fatal(err)
 		}
 	}()
 
@@ -63,6 +71,11 @@ func (s *server) waitSigs(sigs chan os.Signal) {
 	if err := s.http.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}
+
+	if err := s.grpc.Shutdown(); err != nil {
+		log.Fatal(err)
+	}
+
 	log.Print("server shutdown")
 }
 

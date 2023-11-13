@@ -10,8 +10,8 @@ type Container struct {
 }
 
 func (c *Container) Init() error {
-	for _, v := range c.store {
-		if err := v.Init(); err != nil {
+	for _, obj := range c.store {
+		if err := obj.Init(); err != nil {
 			return err
 		}
 	}
@@ -24,7 +24,7 @@ func (c *Container) Get(name string) Ioc {
 }
 
 func (c *Container) Registry(obj Ioc) {
-	if _, exists := c.store[obj.Name()]; exists {
+	if _, exists := c.store[obj.Name()]; !exists {
 		c.store[obj.Name()] = obj
 	}
 }
@@ -38,11 +38,11 @@ func (c *Container) RouteRegistry(r gin.IRouter) {
 	}
 }
 
-// GrpcServiceRegistry 断言实现了 GrpcServiceHandler 接口的对象，调用 Registry 方法
+// GrpcServiceRegistry 断言实现了 GrpcServerHandler 接口的对象，调用 Registry 方法
 func (c *Container) GrpcServiceRegistry(g *grpc.Server) {
 	for _, grpc := range c.store {
-		if service, ok := grpc.(GrpcServiceHandler); ok {
-			service.Registry(g)
+		if grpcServer, ok := grpc.(GrpcServerHandler); ok {
+			grpcServer.Registry(g)
 		}
 	}
 }

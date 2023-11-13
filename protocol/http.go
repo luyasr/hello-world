@@ -21,14 +21,14 @@ func NewHttpServer() *HttpServer {
 
 	return &HttpServer{
 		server: &http.Server{
-			Addr:    config.C.Server.Addr(),
+			Addr:    config.C.HttpServer.Addr(),
 			Handler: r,
 		},
 	}
 }
 
 func (h *HttpServer) Run() error {
-	log.Print("http server running, listen on ", config.C.Server.Addr())
+	log.Print("http server running, listen on ", config.C.HttpServer.Addr())
 	return h.server.ListenAndServe()
 }
 

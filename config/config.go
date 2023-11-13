@@ -9,18 +9,27 @@ import (
 	"github.com/spf13/viper"
 )
 
+var C = new(Config)
+
 type Config struct {
-	Server Server `json:"server"`
+	HttpServer HttpServer `json:"http_server"`
+	GrpcServer GrpcServer `json:"grpc_server"`
 }
 
-type Server struct {
+type HttpServer struct {
 	Port int `json:"port"`
 }
 
-var C = new(Config)
+type GrpcServer struct {
+	Port int `json:"port"`
+}
 
-func (s *Server) Addr() string {
-	return fmt.Sprintf(":%d", s.Port)
+func (h *HttpServer) Addr() string {
+	return fmt.Sprintf(":%d", h.Port)
+}
+
+func (g *GrpcServer) Addr() string {
+	return fmt.Sprintf(":%d", g.Port)
 }
 
 func init() {
