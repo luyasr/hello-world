@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option go_package = "github.com/luyasr/hello-world/apps/hello";
+
+package hello;
+import "apps/hello/pb/model.proto";
+
+service RPC {
+    rpc SayHello (HelloRequest) returns (HelloResponse);
+}
